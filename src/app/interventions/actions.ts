@@ -11,10 +11,8 @@ import {
   type TypeIntervention,
 } from "@/lib/interventions";
 
-export async function creerIntervention(
-  _etat: EtatFormulaire,
-  formData: FormData,
-): Promise<EtatFormulaire> {
+// Vérifie le formulaire et renvoie soit les paramètres à enregistrer, soit un message d'erreur.
+function lireIntervention(formData: FormData) {
   const date = String(formData.get("date") ?? "");
   const type = String(formData.get("type") ?? "") as TypeIntervention;
   const parcelles = formData.getAll("parcelle").map(Number).filter(Number.isInteger);
@@ -50,15 +48,43 @@ export async function creerIntervention(
     return { erreur: `Un ${LIBELLES_INTERVENTION.traitement.toLowerCase()} doit comporter au moins un produit.` };
   }
 
+  return {
+    params: {
+      p_date: date,
+      p_type: type,
+      p_cible: texteOuNull(formData.get("cible")),
+      p_remarques: texteOuNull(formData.get("remarques")),
+      p_parcelles: parcelles,
+      p_produits: produits,
+    },
+  };
+}
+
+export async function creerIntervention(
+  _etat: EtatFormulaire,
+  formData: FormData,
+): Promise<EtatFormulaire> {
+  const lu = lireIntervention(formData);
+  if ("erreur" in lu) return { erreur: lu.erreur! };
+
   const supabase = await createClient();
-  const { error } = await supabase.rpc("creer_intervention", {
-    p_date: date,
-    p_type: type,
-    p_cible: texteOuNull(formData.get("cible")),
-    p_remarques: texteOuNull(formData.get("remarques")),
-    p_parcelles: parcelles,
-    p_produits: produits,
-  });
+  const { error } = await supabase.rpc("creer_intervention", lu.params);
+  if (error) return { erreur: `Enregistrement impossible : ${error.message}` };
+
+  revalidatePath("/interventions");
+  redirect("/interventions");
+}
+
+export async function modifierIntervention(
+  id: number,
+  _etat: EtatFormulaire,
+  formData: FormData,
+): Promise<EtatFormulaire> {
+  const lu = lireIntervention(formData);
+  if ("erreur" in lu) return { erreur: lu.erreur! };
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("modifier_intervention", { p_id: id, ...lu.params });
   if (error) return { erreur: `Enregistrement impossible : ${error.message}` };
 
   revalidatePath("/interventions");

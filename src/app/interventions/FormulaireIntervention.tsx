@@ -31,6 +31,16 @@ export type ProduitChoix = {
 
 type Ligne = { cle: number; produitId: string; dose: string; lot: string };
 
+// Valeurs de départ quand on modifie une intervention existante.
+export type ValeursIntervention = {
+  date: string;
+  type: TypeIntervention;
+  cible: string;
+  remarques: string;
+  parcelles: number[];
+  produits: { produitId: string; dose: string; lot: string }[];
+};
+
 const CHAMP = "rounded-lg border border-zinc-400 px-3 py-3 text-lg bg-transparent";
 const CHOIX =
   "flex items-center gap-2 rounded-lg border border-zinc-400 px-3 py-3 text-lg has-[:checked]:border-green-700 has-[:checked]:bg-green-50 dark:has-[:checked]:bg-green-950";
@@ -41,17 +51,25 @@ export default function FormulaireIntervention({
   parcelles,
   produits,
   derniersLots,
+  valeurs,
+  libelleBouton = "Enregistrer l'intervention",
 }: {
   action: (etat: EtatFormulaire, formData: FormData) => Promise<EtatFormulaire>;
   parcelles: ParcelleChoix[];
   produits: ProduitChoix[];
   derniersLots: Record<number, string>;
+  valeurs?: ValeursIntervention;
+  libelleBouton?: string;
 }) {
   const [etat, envoyer, enCours] = useActionState(action, null);
-  const [type, setType] = useState<TypeIntervention>("traitement");
-  const [cochees, setCochees] = useState<Set<number>>(new Set());
-  const [cible, setCible] = useState("");
-  const [lignes, setLignes] = useState<Ligne[]>([{ cle: 0, produitId: "", dose: "", lot: "" }]);
+  const [type, setType] = useState<TypeIntervention>(valeurs?.type ?? "traitement");
+  const [cochees, setCochees] = useState<Set<number>>(new Set(valeurs?.parcelles));
+  const [cible, setCible] = useState(valeurs?.cible ?? "");
+  const [lignes, setLignes] = useState<Ligne[]>(
+    valeurs && valeurs.produits.length > 0
+      ? valeurs.produits.map((p, i) => ({ cle: i, ...p }))
+      : [{ cle: 0, produitId: "", dose: "", lot: "" }],
+  );
 
   const lotRequis = lotObligatoire(type);
   const produitsParId = new Map(produits.map((p) => [p.id, p]));
@@ -88,7 +106,7 @@ export default function FormulaireIntervention({
           type="date"
           name="date"
           required
-          defaultValue={aujourdhui()}
+          defaultValue={valeurs?.date ?? aujourdhui()}
           className={CHAMP}
         />
       </label>
@@ -269,7 +287,12 @@ export default function FormulaireIntervention({
 
       <label className="flex flex-col gap-1">
         <span>Remarques</span>
-        <textarea name="remarques" rows={3} className={CHAMP} />
+        <textarea
+          name="remarques"
+          rows={3}
+          defaultValue={valeurs?.remarques ?? ""}
+          className={CHAMP}
+        />
       </label>
 
       <Recapitulatif lignes={lignes} produitsParId={produitsParId} parcelles={choisies} />
@@ -285,7 +308,7 @@ export default function FormulaireIntervention({
         disabled={enCours}
         className="rounded-lg bg-green-700 px-4 py-4 text-lg font-semibold text-white disabled:opacity-60"
       >
-        {enCours ? "Enregistrement…" : "Enregistrer l'intervention"}
+        {enCours ? "Enregistrement…" : libelleBouton}
       </button>
     </form>
   );
