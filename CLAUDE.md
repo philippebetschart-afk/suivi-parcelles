@@ -62,9 +62,12 @@ Hors ligne, plusieurs utilisateurs, météo, coûts, analyses de sol, cartograph
 - Alerte cuivre : quand le total de l'année en cours atteint 3 kg/ha (moyenne du domaine) ; seuil paramétrable.
   Les parcelles qui dépassent individuellement 3 kg/ha sont aussi signalées.
 - Historique cuivre des années passées disponible uniquement pour l'ensemble du domaine (pas par parcelle) :
-  saisi comme un total annuel du domaine, intégré au calcul de la moyenne sur 7 ans.
+  saisi comme la moyenne du domaine en kg Cu/ha par campagne (valeur déclarée à Ecocert),
+  prioritaire sur le calcul des interventions pour cette année, intégré au calcul sur 7 ans.
+- « Campagne » de traitement = mai à octobre, donc incluse dans l'année civile :
+  les cumuls cuivre se font par année civile.
 - Modification d'une intervention : garder une trace (date de modification + ancienne valeur).
-- Téléphone Android. Certificateur : pas encore précisé.
+- Téléphone Android. Certificateur : Ecocert.
 - Parcelles importées depuis export_parcelle.xlsx : les 15 lignes (vignes, vergers, jachères),
   surface = colonne « Surface », noms « Parcelle N » (doublons 12 et 13 : « a » / « b »).
 - Type de parcelle (vigne, verger, jachère, autre) : les moyennes du domaine (cuivre, azote)

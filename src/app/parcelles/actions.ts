@@ -71,7 +71,7 @@ export async function modifierParcelle(
   if (error) return { erreur: messageErreur(error.code, error.message) };
 
   revalidatePath("/parcelles");
-  redirect("/parcelles");
+  redirect(`/parcelles/${id}`);
 }
 
 // Archiver ne supprime rien : la parcelle disparaît de la liste mais garde son historique.

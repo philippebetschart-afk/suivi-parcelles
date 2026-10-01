@@ -34,6 +34,13 @@ export default async function Accueil() {
       </Link>
 
       <Link
+        href="/bilan"
+        className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
+      >
+        Bilan cuivre et azote
+      </Link>
+
+      <Link
         href="/parcelles"
         className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
       >
