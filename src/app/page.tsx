@@ -20,6 +20,20 @@ export default async function Accueil() {
       </div>
 
       <Link
+        href="/interventions/nouvelle"
+        className="rounded-lg bg-green-700 px-4 py-6 text-center text-xl font-semibold text-white"
+      >
+        + Nouvelle intervention
+      </Link>
+
+      <Link
+        href="/interventions"
+        className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
+      >
+        Interventions
+      </Link>
+
+      <Link
         href="/parcelles"
         className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
       >
