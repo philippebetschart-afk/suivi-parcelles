@@ -26,6 +26,13 @@ export default async function Accueil() {
         Parcelles
       </Link>
 
+      <Link
+        href="/produits"
+        className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
+      >
+        Produits
+      </Link>
+
       <form action={seDeconnecter}>
         <button
           type="submit"

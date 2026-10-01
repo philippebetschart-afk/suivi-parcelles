@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { LIBELLES_TYPE, TYPES_PARCELLE, type TypeParcelle } from "@/lib/parcelles";
-import type { EtatFormulaire } from "./actions";
+import { nombreVersSaisie, type EtatFormulaire } from "@/lib/formulaire";
 
 export type ValeursParcelle = {
   nom: string;
@@ -57,9 +57,7 @@ export default function FormulaireParcelle({
           required
           inputMode="decimal"
           placeholder="ex. 0,55"
-          defaultValue={
-            valeurs.surface_ha === null ? "" : String(valeurs.surface_ha).replace(".", ",")
-          }
+          defaultValue={nombreVersSaisie(valeurs.surface_ha)}
           className={CHAMP}
         />
       </label>

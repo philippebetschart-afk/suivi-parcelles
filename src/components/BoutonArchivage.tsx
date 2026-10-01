@@ -1,19 +1,15 @@
 "use client";
 
-// Bouton d'archivage avec demande de confirmation.
+// Bouton d'archivage (ou de réactivation) avec demande de confirmation.
 export default function BoutonArchivage({
   action,
-  archivee,
-  nom,
+  question,
+  libelle,
 }: {
   action: () => Promise<void>;
-  archivee: boolean;
-  nom: string;
+  question: string;
+  libelle: string;
 }) {
-  const question = archivee
-    ? `Réactiver ${nom} ? Elle réapparaîtra dans la liste des parcelles.`
-    : `Archiver ${nom} ? Elle disparaîtra de la liste, mais son historique est conservé.`;
-
   return (
     <form
       action={action}
@@ -26,7 +22,7 @@ export default function BoutonArchivage({
         type="submit"
         className="w-full rounded-lg border border-zinc-400 px-4 py-4 text-lg"
       >
-        {archivee ? "Réactiver la parcelle" : "Archiver la parcelle"}
+        {libelle}
       </button>
     </form>
   );

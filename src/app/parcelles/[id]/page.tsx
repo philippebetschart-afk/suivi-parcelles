@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import FormulaireParcelle, { type ValeursParcelle } from "../FormulaireParcelle";
 import { changerArchivage, modifierParcelle } from "../actions";
-import BoutonArchivage from "./BoutonArchivage";
+import BoutonArchivage from "@/components/BoutonArchivage";
 
 export default async function ModifierParcelle(props: PageProps<"/parcelles/[id]">) {
   const { id } = await props.params;
@@ -42,8 +42,12 @@ export default async function ModifierParcelle(props: PageProps<"/parcelles/[id]
 
       <BoutonArchivage
         action={changerArchivage.bind(null, idParcelle, !parcelle.archivee)}
-        archivee={parcelle.archivee}
-        nom={parcelle.nom}
+        libelle={parcelle.archivee ? "Réactiver la parcelle" : "Archiver la parcelle"}
+        question={
+          parcelle.archivee
+            ? `Réactiver ${parcelle.nom} ? Elle réapparaîtra dans la liste des parcelles.`
+            : `Archiver ${parcelle.nom} ? Elle disparaîtra de la liste, mais son historique est conservé.`
+        }
       />
     </main>
   );
