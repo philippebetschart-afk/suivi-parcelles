@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { aujourdhui } from "@/lib/interventions";
 
 const CHAMP = "rounded-lg border border-zinc-400 px-3 py-3 text-lg bg-transparent";
 const BOUTON = "rounded-lg bg-green-700 px-4 py-4 text-lg font-semibold text-white";
 
-export default function Export() {
+export default async function Export() {
+  await connection(); // date du jour calculée à chaque visite, pas à la mise en ligne
   const jour = aujourdhui();
 
   return (
