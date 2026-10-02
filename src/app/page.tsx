@@ -41,6 +41,13 @@ export default async function Accueil() {
       </Link>
 
       <Link
+        href="/export"
+        className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
+      >
+        Export du registre
+      </Link>
+
+      <Link
         href="/parcelles"
         className="rounded-lg bg-green-700 px-4 py-4 text-center text-lg font-semibold text-white"
       >

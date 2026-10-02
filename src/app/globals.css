@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Impression du registre (PDF) : A4 paysage, fond blanc, sans les boutons. */
+@page {
+  size: A4 landscape;
+  margin: 1cm;
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+  .no-print {
+    display: none;
+  }
+}
